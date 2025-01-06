@@ -52,29 +52,36 @@ export class CLI {
    * If "Quitter" is selected, calls the `quit` method.
    */
   public async menu() {
-    const response = await prompts({
-      type: "select",
-      name: "action",
-      message: "Que voulez-vous faire ?",
-      choices: [
-        ...this.choices.map((choice) => ({
-          title: choice.title,
-          value: choice.value,
-        })),
-        { title: "Quitter", value: "quit" },
-      ],
-    });
+    let shouldExit = false;
 
-    const choice = this.choices.find(
-      (choice) => choice.value === response.action
-    );
+    while (!shouldExit) {
+      const response = await prompts({
+        type: "select",
+        name: "action",
+        message: "Que voulez-vous faire ?",
+        choices: [
+          ...this.choices.map((choice) => ({
+            title: choice.title,
+            value: choice.value,
+          })),
+          { title: "Quitter", value: "quit" },
+        ],
+      });
 
-    if (choice) await choice.action();
-    else await this.quit();
+      const choice = this.choices.find(
+          (choice) => choice.value === response.action
+      );
 
-    console.log("\n");
-    this.menu();
+      if (choice) {
+        console.clear();
+        await choice.action();
+      } else {
+        shouldExit = true;
+        await this.quit();
+      }
+    }
   }
+
 
   /**
    * Quit the CLI and exit the program.

@@ -1,4 +1,4 @@
-import { CLI } from "./CLI";
+import { CLI } from "./cli/CLI";
 import {onboarding} from "./data/onboarding";
 import {BankAccount} from "./models/BankAccount";
 

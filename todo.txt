@@ -1,6 +1,7 @@
 - Code PIN
     La connexion est obligatoire pour accéder à l'application
     Si le code PIN est incorrect, l'utilisateur doit être notifié
+    Vous devez respecter les principes de sécurité (pas de stockage en clair du code PIN, utilisez un algorithme de hachage comme bcrypt ou argon2 par exemple)
 - Connexion à un compte existant
 - Déposer de l'argent
     Il doit renseigner le montant à déposer, au travers d'un prompt numérique

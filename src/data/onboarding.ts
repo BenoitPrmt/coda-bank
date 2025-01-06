@@ -1,4 +1,4 @@
-import {CLI} from "../CLI";
+import {CLI} from "../cli/CLI";
 import {BankAccount} from "../models/BankAccount";
 
 export async function onboarding(): Promise<BankAccount> {
