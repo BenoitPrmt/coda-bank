@@ -15,3 +15,5 @@
     L'historique doit afficher les 10 dernières opérations, mais doit tout de même enregistrer toutes les opérations effectuées sans limite
 - Voir le solde
 - Readme qui explique le projet
+- Ajouter des commentaires
+- Vérifier les types

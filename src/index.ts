@@ -1,6 +1,7 @@
 import { CLI } from "./cli/CLI";
 import {onboarding} from "./data/onboarding";
 import {BankAccount} from "./models/BankAccount";
+import {deposit, withdraw} from "./data/transactions";
 
 const startupParts = [
   "   __________  ____  ___       ____  ___    _   ____ __",
@@ -21,21 +22,21 @@ onboarding().then((userBankAccount: BankAccount) => {
       title: "Déposer de l'argent",
       value: "deposit",
       action: () => {
-        userBankAccount.deposit(100);
+        deposit(userBankAccount);
       },
     },
     {
       title: "Retirer de l'argent",
       value: "with",
       action: () => {
-        userBankAccount.withdraw(50);
+        withdraw(userBankAccount);
       },
     },
     {
       title: "Voir le solde",
       value: "balance",
       action: () => {
-        console.log(`Votre solde est de ${userBankAccount.checkBalance()} €`);
+        userBankAccount.displayBalance();
       },
     },
   ]);
