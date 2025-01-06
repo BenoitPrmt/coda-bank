@@ -1,4 +1,6 @@
 import { CLI } from "./CLI";
+import {onboarding} from "./data/onboarding";
+import {BankAccount} from "./models/BankAccount";
 
 const startupParts = [
   "   __________  ____  ___       ____  ___    _   ____ __",
@@ -13,16 +15,30 @@ const startupParts = [
 
 console.log(startupParts.join("\n"));
 
-// TODO
-
-const cli = new CLI([
-  {
-    title: "Créer un compte",
-    value: "create",
-    action: () => {
-      console.log("Création d'un compte");
+onboarding().then((userBankAccount: BankAccount) => {
+  const cli = new CLI([
+    {
+      title: "Déposer de l'argent",
+      value: "deposit",
+      action: () => {
+        userBankAccount.deposit(100);
+      },
     },
-  },
-]);
+    {
+      title: "Retirer de l'argent",
+      value: "with",
+      action: () => {
+        userBankAccount.withdraw(50);
+      },
+    },
+    {
+      title: "Voir le solde",
+      value: "balance",
+      action: () => {
+        console.log(`Votre solde est de ${userBankAccount.checkBalance()} €`);
+      },
+    },
+  ]);
 
-cli.menu();
+  cli.menu();
+})
