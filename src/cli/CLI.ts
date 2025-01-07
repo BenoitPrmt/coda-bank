@@ -2,7 +2,7 @@ import type { Choice, PromptType } from "prompts";
 import prompts from "prompts";
 
 export interface CLIChoice extends Choice {
-  action: Function;
+  action: () => Promise<void>;
 }
 
 /**
@@ -29,32 +29,36 @@ export class CLI {
    * @returns A promise that resolves to the user's input, either a string or a number.
    */
   public static async askValue(message: string, type: "text"): Promise<string>;
+  public static async askValue(message: string, type: "number"): Promise<number>;
   public static async askValue(
-    message: string,
-    type: "number"
-  ): Promise<number>;
-  public static async askValue(
-    message: string,
-    type: PromptType = "text"
+      message: string,
+      type: PromptType = "text"
   ): Promise<string | number> {
-    const response = await prompts({
-      type,
-      name: "value",
-      message,
-    });
+    try {
+      const response = await prompts({
+        type,
+        name: "value",
+        message,
+      });
 
-    return response.value;
+      if (response.value === undefined) {
+        throw new Error("Operation cancelled");
+      }
+
+      return response.value;
+    } catch (error) {
+      console.log("\nOpération annulée");
+      return Promise.reject(error);
+    }
   }
 
   /**
    * Displays a menu to the user with the available choices.
-   * If a choice is selected, its action is executed.
+   * If a choice is selected, its action is executed, then the menu is displayed again.
    * If "Quitter" is selected, calls the `quit` method.
    */
   public async menu() {
-    let shouldExit = false;
-
-    while (!shouldExit) {
+    try {
       const response = await prompts({
         type: "select",
         name: "action",
@@ -68,17 +72,32 @@ export class CLI {
         ],
       });
 
+      if (response.action === undefined) {
+        await this.quit();
+        return;
+      }
+
       const choice = this.choices.find(
           (choice) => choice.value === response.action
       );
 
       if (choice) {
-        console.clear();
-        await choice.action();
+        try {
+          await choice.action();
+        } catch (error) {
+            console.log("\nUne erreur est survenue");
+        }
       } else {
-        shouldExit = true;
         await this.quit();
+        return;
       }
+
+      // Wait for 1 second before displaying the menu again
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await this.menu();
+    } catch (error) {
+      console.log("\nUne erreur est survenue");
+      await this.menu();
     }
   }
 
@@ -88,9 +107,8 @@ export class CLI {
    * Waits for a random time between 0 and 2 seconds before exiting.
    */
   private async quit() {
-    const randomTime = Math.floor(Math.random() * 2); // Random time between 0 and 2 seconds
+    const randomTime = Math.floor(Math.random() * 2);
     await new Promise((resolve) => setTimeout(resolve, randomTime * 1000));
-
     console.log("Au revoir !");
     process.exit(0);
   }

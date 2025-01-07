@@ -21,25 +21,33 @@ onboarding().then((userBankAccount: BankAccount) => {
     {
       title: "Déposer de l'argent",
       value: "deposit",
-      action: () => {
-        deposit(userBankAccount);
+      action: async () => {
+        try {
+          await deposit(userBankAccount);
+        } catch (error) {
+            // Error already handled in deposit
+        }
       },
     },
     {
       title: "Retirer de l'argent",
-      value: "with",
-      action: () => {
-        withdraw(userBankAccount);
+      value: "withdraw",
+      action: async () => {
+        try {
+          await withdraw(userBankAccount);
+        } catch (error) {
+          // Error already handled in withdraw
+        }
       },
     },
     {
       title: "Voir le solde",
       value: "balance",
-      action: () => {
+      action: async () => {
         userBankAccount.displayBalance();
       },
     },
   ]);
 
   cli.menu();
-})
+});
