@@ -19,3 +19,8 @@ export async function withdraw(userBankAccount: BankAccount): Promise<void> {
         userBankAccount.withdraw(amount);
     });
 }
+
+export async function displayHistory(userBankAccount: BankAccount): Promise<void> {
+    userBankAccount.displayHistory();
+    await CLI.askValue("Appuyez sur Entrée pour revenir au menu", "text");
+}

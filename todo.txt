@@ -1,19 +1,19 @@
 - Code PIN
     La connexion est obligatoire pour accéder à l'application
     Si le code PIN est incorrect, l'utilisateur doit être notifié
-    Vous devez respecter les principes de sécurité (pas de stockage en clair du code PIN, utilisez un algorithme de hachage comme bcrypt ou argon2 par exemple)
+    Vous devez respecter les principes de sécurité (pas de stockage en clair du code PIN, utilisez un algorithme de hachage comme bcrypt ou argon2 par exemple) ✅
 - Connexion à un compte existant
-- Déposer de l'argent
-    Il doit renseigner le montant à déposer, au travers d'un prompt numérique
-    Le montant doit être un entier positif (pas de décimales)
-- Retirer de l'argent
-    Il doit renseigner le montant à retirer, au travers d'un prompt numérique
-    Le montant doit être un entier positif (pas de décimales), qui sera déduit du solde
-- Voir l'historique
-    L'historique doit contenir la date, le type d'opération (dépôt ou retrait),
-    le montant, le solde après l'opération ainsi que la validité de l'opération (réussie ou non)
-    L'historique doit afficher les 10 dernières opérations, mais doit tout de même enregistrer toutes les opérations effectuées sans limite
-- Voir le solde
+- Déposer de l'argent ✅
+    Il doit renseigner le montant à déposer, au travers d'un prompt numérique ✅
+    Le montant doit être un entier positif (pas de décimales) ✅
+- Retirer de l'argent ✅
+    Il doit renseigner le montant à retirer, au travers d'un prompt numérique ✅
+    Le montant doit être un entier positif (pas de décimales), qui sera déduit du solde ✅
+- Voir l'historique des opérations ✅
+    L'historique doit contenir la date, le type d'opération (dépôt ou retrait), ✅
+    le montant, le solde après l'opération ainsi que la validité de l'opération (réussie ou non) ✅
+    L'historique doit afficher les 10 dernières opérations, mais doit tout de même enregistrer toutes les opérations effectuées sans limite ✅
+- Voir le solde ✅
 - Readme qui explique le projet
 - Ajouter des commentaires
 - Vérifier les types

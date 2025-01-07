@@ -1,7 +1,7 @@
 import { CLI } from "./cli/CLI";
 import {onboarding} from "./data/onboarding";
 import {BankAccount} from "./models/BankAccount";
-import {deposit, withdraw} from "./data/transactions";
+import {deposit, displayHistory, withdraw} from "./data/transactions";
 
 const startupParts = [
   "   __________  ____  ___       ____  ___    _   ____ __",
@@ -45,6 +45,13 @@ onboarding().then((userBankAccount: BankAccount) => {
       value: "balance",
       action: async () => {
         userBankAccount.displayBalance();
+      },
+    },
+    {
+      title: "Voir l'historique des transactions",
+      value: "history",
+      action: async () => {
+        await displayHistory(userBankAccount);
       },
     },
   ]);
