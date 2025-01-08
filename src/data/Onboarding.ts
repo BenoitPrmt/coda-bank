@@ -1,5 +1,6 @@
 import { BankAccount } from "../models/BankAccount";
 import { CLI } from "../cli/CLI";
+import {PIN_CODE_LENGTH, PIN_CODE_MAX_ATTEMPTS} from "../config/constants";
 
 /**
  * Represents the onboarding process for users (registration and login).
@@ -35,22 +36,22 @@ export class Onboarding {
         let account: BankAccount | null = null;
 
         while (!account) {
-            account = await cli.menuWithReturn();
+            account = await cli.menuWithReturn() as BankAccount | null;
         }
 
         return account;
     }
 
     /**
-     * Registers a new user account.
+     * Register a new user account.
      */
     public static async register(): Promise<void> {
         const username: string = await CLI.askValue("Entrez votre nom d'utilisateur :", "text");
 
         let pinCode: string;
         do {
-            pinCode = await CLI.askValue("Entrez un code pin à 4 chiffres :", "text");
-        } while (isNaN(+pinCode) || pinCode.length !== 4);
+            pinCode = await CLI.askValue(`Entrez un code pin à ${PIN_CODE_LENGTH} chiffres :`, "text");
+        } while (isNaN(+pinCode) || pinCode.length !== PIN_CODE_LENGTH);
 
         const newAccount = new BankAccount(username, pinCode);
         Onboarding.accounts.push(newAccount);
@@ -61,7 +62,6 @@ export class Onboarding {
      * Log in an existing user account.
      */
     public static async login(): Promise<BankAccount | null> {
-        console.log(this.accounts.length);
         if (this.accounts.length === 0) {
             console.log("Aucun compte n'a été créé. Veuillez d'abord créer un compte.");
             await this.register();
@@ -69,8 +69,6 @@ export class Onboarding {
         }
 
         let attempts = 0;
-        const maxAttempts = 3;
-
         do {
             const username: string = await CLI.askValue("Entrez votre nom d'utilisateur :", "text");
             this.currentAccount = this.accounts.find((account) => account.username === username) || null;
@@ -79,7 +77,7 @@ export class Onboarding {
             }
         } while (!this.currentAccount);
 
-        while (attempts < maxAttempts) {
+        while (attempts < PIN_CODE_MAX_ATTEMPTS) {
             const pinCode: string = await CLI.askValue("Entrez votre code PIN :", "text");
 
             if (this.currentAccount.checkPinCode(pinCode)) {
@@ -87,10 +85,10 @@ export class Onboarding {
                 return this.currentAccount;
             } else {
                 attempts++;
-                console.log(`Code PIN incorrect. Tentative ${attempts}/${maxAttempts}.`);
+                console.log(`Code PIN incorrect. Tentative ${attempts}/${PIN_CODE_MAX_ATTEMPTS}.`);
             }
 
-            if (attempts >= maxAttempts) {
+            if (attempts >= PIN_CODE_MAX_ATTEMPTS) {
                 console.log("Nombre maximum de tentatives atteint.");
                 process.exit(0);
             }
