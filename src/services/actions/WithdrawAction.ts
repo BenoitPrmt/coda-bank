@@ -2,6 +2,7 @@ import { BankAccount } from "../../models/BankAccount";
 import { CLI } from "../../cli/CLI";
 import { Action } from "./Action";
 import {BankAccountActionType, BankAccountType} from "../../types/BankAccountTypes";
+import {PersistenceService} from "../PersistenceService";
 
 export class WithdrawAction implements Action {
     async execute(userBankAccount: BankAccount): Promise<void> {
@@ -25,6 +26,8 @@ export class WithdrawAction implements Action {
             userBankAccount.withdraw(amount, targetAccount);
             userBankAccount.addToHistory(BankAccountActionType.Withdraw, amount, targetAccount);
             userBankAccount.displayBalance();
+
+            PersistenceService.saveBankAccount(userBankAccount);
         });
     }
 }
