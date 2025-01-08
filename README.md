@@ -11,7 +11,7 @@ Coda Bank est une application bancaire fictive dans le terminal développée en 
 - Voir le solde
 
 ## ⚡️️ Prérequis
-Vous devez avoir NodeJS en version 20.0.0 ou supérieure installé sur votre machine.
+Vous devez avoir NodeJS en version 18 ou supérieure installé sur votre machine.
 
 ## 🚀 Installation et lancement du projet
 
