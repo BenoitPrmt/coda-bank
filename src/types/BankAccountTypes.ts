@@ -20,4 +20,5 @@ export type OperationJsonType = {
     actionType: BankAccountActionType;
     isSuccessful: boolean;
     account: BankAccountType;
+    date: string;
 }

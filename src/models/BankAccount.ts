@@ -85,7 +85,7 @@ export class BankAccount {
         this.savings = json.savings;
         this.overdraft = json.overdraft;
         this.history = json.history.map((operation: OperationJsonType) => {
-            return new Operation(operation.amount, operation.targetBalance, operation.actionType, operation.isSuccessful, operation.account);
+            return new Operation(operation.amount, operation.targetBalance, operation.actionType, operation.isSuccessful, operation.account, operation.date);
         });
         this.pinCode = json.pinCode;
     }
