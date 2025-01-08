@@ -53,6 +53,32 @@ export class CLI {
     }
   }
 
+  /**
+   * Prompts the user to choose a value from a list of choices.
+   * @param message - The message to display to the user.
+   * @param choices - An array of choices to display to the user.
+   * @returns A promise that resolves to the user's choice.
+   */
+    public static async askChoice<T>(message: string, choices: { title: string; value: T }[]): Promise<T> {
+        try {
+            const response = await prompts({
+                type: "select",
+                name: "value",
+                message,
+                choices,
+            });
+
+            if (response.value === undefined) {
+                throw new Error("Operation cancelled");
+            }
+
+            return response.value;
+        } catch (error) {
+            console.log("\nOpération annulée");
+            return Promise.reject(error);
+        }
+    }
+
   public async menuWithReturn() {
     try {
       const response = await prompts({

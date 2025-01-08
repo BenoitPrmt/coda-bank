@@ -1,5 +1,6 @@
 import {BankAccount} from "../models/BankAccount";
 import {CLI} from "../cli/CLI";
+import {BankAccountType} from "../types/BankAccountTypes";
 
 /**
  * Service responsible for handling bank transactions
@@ -10,12 +11,16 @@ export class TransactionService {
      * @param userBankAccount
      */
     public static async deposit(userBankAccount: BankAccount): Promise<void> {
-        const amount = await CLI.askValue("Entrez le montant à déposer :", "number");
+        const amount: number = await CLI.askValue("Entrez le montant à déposer :", "number");
         if (isNaN(amount) || amount <= 0) {
             console.log("Montant invalide. Veuillez entrer un nombre positif.");
             return;
         }
-        userBankAccount.deposit(amount);
+        const targetAccount: BankAccountType = await CLI.askChoice("Sélectionnez le compte cible :", [
+            { title: "Compte courant", value: "main" },
+            { title: "Compte épargne", value: "saving" },
+        ]);
+        userBankAccount.deposit(amount, targetAccount);
     }
 
     /**
