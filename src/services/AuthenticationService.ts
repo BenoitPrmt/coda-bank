@@ -7,7 +7,6 @@ import {PersistenceService} from "./PersistenceService";
  * Service class for user authentication (login and registration).
  */
 export class AuthenticationService {
-    private static accounts: BankAccount[] = [];
     private static currentAccount: BankAccount | null = null;
 
     /**
@@ -55,7 +54,6 @@ export class AuthenticationService {
         } while (isNaN(+pinCode) || pinCode.length !== PIN_CODE_LENGTH);
 
         const newAccount = new BankAccount(username, pinCode);
-        AuthenticationService.accounts.push(newAccount);
 
         PersistenceService.saveBankAccount(newAccount);
 

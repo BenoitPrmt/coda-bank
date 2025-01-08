@@ -1,4 +1,9 @@
-import {BankAccountActionType, BankAccountType} from "../types/BankAccountTypes";
+import {
+    BankAccountActionType,
+    BankAccountJsonType,
+    BankAccountType,
+    OperationJsonType
+} from "../types/BankAccountTypes";
 import {Operation} from "./Operation";
 import {EncryptionService} from "../services/EncryptionService";
 
@@ -43,17 +48,17 @@ export class BankAccount {
         console.log(`Transaction ${isSuccessful ? 'réussie' : 'échouée'}.`);
     }
 
-    public loadFromJson(json: any): void {
+    public loadFromJson(json: BankAccountJsonType): void {
         this.money = json.money;
         this.savings = json.savings;
         this.overdraft = json.overdraft;
-        this.history = json.history.map((operation: any) => {
+        this.history = json.history.map((operation: OperationJsonType) => {
             return new Operation(operation.amount, operation.targetBalance, operation.actionType, operation.isSuccessful, operation.account);
         });
         this.pinCode = json.pinCode;
     }
 
-    public toJson(): any {
+    public toJson(): BankAccountJsonType {
         return {
             money: this.money,
             savings: this.savings,

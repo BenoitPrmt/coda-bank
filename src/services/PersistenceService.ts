@@ -31,7 +31,7 @@ export class PersistenceService {
     }
 
     public static loadBankAccounts(): BankAccountJsonType[] {
-        const data = fs.readFileSync("data.json", "utf-8");
+        const data: string = fs.readFileSync("data.json", "utf-8");
         return JSON.parse(data);
     }
 }

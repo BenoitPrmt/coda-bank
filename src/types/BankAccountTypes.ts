@@ -14,7 +14,7 @@ export type BankAccountJsonType = {
     pinCode: string;
 }
 
-type OperationJsonType = {
+export type OperationJsonType = {
     amount: number;
     targetBalance: number;
     actionType: BankAccountActionType;

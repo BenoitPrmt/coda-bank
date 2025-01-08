@@ -1,4 +1,4 @@
-import {BankAccountActionType, BankAccountType} from "../types/BankAccountTypes";
+import {BankAccountActionType, BankAccountType, OperationJsonType} from "../types/BankAccountTypes";
 
 export class Operation {
     public date: Date = new Date();
@@ -22,7 +22,7 @@ export class Operation {
         return `${displayDate} | ${this.successful ? '✅' : '❌'} | ${this.actionType} de ${this.amount}€ (solde : ${this.balance}€) | ${targetAccount}`;
     }
 
-    public toJson(): any {
+    public toJson(): OperationJsonType {
         return {
             amount: this.amount,
             targetBalance: this.balance,

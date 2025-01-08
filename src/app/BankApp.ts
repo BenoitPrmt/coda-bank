@@ -69,7 +69,7 @@ export class BankApp {
      */
     private static async start(): Promise<void> {
         try {
-            const account = await AuthenticationService.onboarding();
+            const account: BankAccount | null = await AuthenticationService.onboarding();
             if (account) {
                 const cli = new CLI(this.mainMenu(account));
                 await cli.menu();
