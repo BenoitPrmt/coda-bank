@@ -1,6 +1,6 @@
 import {BankAccount} from "../models/BankAccount";
 import {Transactions} from "./Transactions";
-import {Onboarding} from "./Onboarding";
+import {Authentication} from "./Authentication";
 import {CLI} from "../cli/CLI";
 
 export class BankApp {
@@ -67,7 +67,7 @@ export class BankApp {
      */
     private static async start(): Promise<void> {
         try {
-            const account = await Onboarding.onboarding();
+            const account = await Authentication.onboarding();
             if (account) {
                 const cli = new CLI(this.mainMenu(account));
                 await cli.menu();

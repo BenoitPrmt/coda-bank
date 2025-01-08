@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import {BankAccountActionType} from "../types/BankAccountTypes";
 import {Operation} from "./Operation";
 import {EncryptionService} from "../services/EncryptionService";
