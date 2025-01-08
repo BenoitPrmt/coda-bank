@@ -3,9 +3,9 @@ import { CLI } from "../cli/CLI";
 import {PIN_CODE_LENGTH, PIN_CODE_MAX_ATTEMPTS} from "../config/constants";
 
 /**
- * Represents the authentication process for users (registration and login).
+ * Service class for user authentication (login and registration).
  */
-export class Authentication {
+export class AuthenticationService {
     private static accounts: BankAccount[] = [];
     private static currentAccount: BankAccount | null = null;
 
@@ -20,14 +20,14 @@ export class Authentication {
                 title: "Créer mon compte",
                 value: "createAccount",
                 action: async () => {
-                    await Authentication.register();
+                    await AuthenticationService.register();
                 },
             },
             {
                 title: "Me connecter",
                 value: "login",
                 action: async () => {
-                    return await Authentication.login();
+                    return await AuthenticationService.login();
                 },
             },
         ];
@@ -54,7 +54,7 @@ export class Authentication {
         } while (isNaN(+pinCode) || pinCode.length !== PIN_CODE_LENGTH);
 
         const newAccount = new BankAccount(username, pinCode);
-        Authentication.accounts.push(newAccount);
+        AuthenticationService.accounts.push(newAccount);
         console.log("Compte créé avec succès ! Veuillez vous connecter.");
     }
 

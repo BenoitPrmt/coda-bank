@@ -1,4 +1,4 @@
-import {BankApp} from "./data/BankApp";
+import {BankApp} from "./app/BankApp";
 
 const startupParts = [
   "   __________  ____  ___       ____  ___    _   ____ __",

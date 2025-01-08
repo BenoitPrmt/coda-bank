@@ -51,13 +51,12 @@ export class BankAccount {
     }
 
     public displayHistory(): void {
-        console.log('-'.repeat(50));
         console.log("Date | Etat - Type de transaction - Montant (solde)");
+        console.log('-'.repeat(50));
 
         const history = this.history.slice(-10);
         history.forEach((transaction: Operation) => {
             console.log(transaction.toString());
         });
-        console.log('-'.repeat(50));
     }
 }

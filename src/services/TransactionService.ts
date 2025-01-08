@@ -2,9 +2,9 @@ import {BankAccount} from "../models/BankAccount";
 import {CLI} from "../cli/CLI";
 
 /**
- * Represents the transactions that can be performed by users on bank accounts.
+ * Service responsible for handling bank transactions
  */
-export class Transactions {
+export class TransactionService {
     /**
      * Deposits money into a user's bank account.
      * @param userBankAccount
