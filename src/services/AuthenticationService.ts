@@ -3,9 +3,9 @@ import { CLI } from "../cli/CLI";
 import {PIN_CODE_LENGTH, PIN_CODE_MAX_ATTEMPTS} from "../config/constants";
 
 /**
- * Represents the onboarding process for users (registration and login).
+ * Service class for user authentication (login and registration).
  */
-export class Onboarding {
+export class AuthenticationService {
     private static accounts: BankAccount[] = [];
     private static currentAccount: BankAccount | null = null;
 
@@ -20,14 +20,14 @@ export class Onboarding {
                 title: "Créer mon compte",
                 value: "createAccount",
                 action: async () => {
-                    await Onboarding.register();
+                    await AuthenticationService.register();
                 },
             },
             {
                 title: "Me connecter",
                 value: "login",
                 action: async () => {
-                    return await Onboarding.login();
+                    return await AuthenticationService.login();
                 },
             },
         ];
@@ -54,7 +54,7 @@ export class Onboarding {
         } while (isNaN(+pinCode) || pinCode.length !== PIN_CODE_LENGTH);
 
         const newAccount = new BankAccount(username, pinCode);
-        Onboarding.accounts.push(newAccount);
+        AuthenticationService.accounts.push(newAccount);
         console.log("Compte créé avec succès ! Veuillez vous connecter.");
     }
 

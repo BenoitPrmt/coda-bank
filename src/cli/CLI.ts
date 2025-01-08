@@ -127,8 +127,8 @@ export class CLI {
         if (choice) {
           try {
             await choice.action();
-            // Wait for 1 second before displaying the menu again
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Wait for 400ms before displaying the menu again
+            await new Promise(resolve => setTimeout(resolve, 400));
           } catch (error) {
             console.log("\nUne erreur est survenue");
           }

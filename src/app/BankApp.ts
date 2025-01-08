@@ -1,7 +1,7 @@
 import {BankAccount} from "../models/BankAccount";
-import {Transactions} from "./Transactions";
-import {Onboarding} from "./Onboarding";
+import {AuthenticationService} from "../services/AuthenticationService";
 import {CLI} from "../cli/CLI";
+import {TransactionService} from "../services/TransactionService";
 
 export class BankApp {
     /**
@@ -14,7 +14,7 @@ export class BankApp {
                 value: "deposit",
                 action: async () => {
                     try {
-                        await Transactions.deposit(userBankAccount);
+                        await TransactionService.deposit(userBankAccount);
                     } catch (error) {
                         // Error already handled in deposit
                     }
@@ -25,7 +25,7 @@ export class BankApp {
                 value: "withdraw",
                 action: async () => {
                     try {
-                        await Transactions.withdraw(userBankAccount);
+                        await TransactionService.withdraw(userBankAccount);
                     } catch (error) {
                         // Error already handled in withdraw
                     }
@@ -42,14 +42,14 @@ export class BankApp {
                 title: "Voir l'historique des transactions",
                 value: "history",
                 action: async () => {
-                    await Transactions.displayHistory(userBankAccount);
+                    await TransactionService.displayHistory(userBankAccount);
                 },
             },
             {
                 title: "Gérer le découvert autorisé",
                 value: "overdraft",
                 action: async () => {
-                    await Transactions.setOverdraft(userBankAccount);
+                    await TransactionService.setOverdraft(userBankAccount);
                 },
             },
             {
@@ -67,7 +67,7 @@ export class BankApp {
      */
     private static async start(): Promise<void> {
         try {
-            const account = await Onboarding.onboarding();
+            const account = await AuthenticationService.onboarding();
             if (account) {
                 const cli = new CLI(this.mainMenu(account));
                 await cli.menu();
