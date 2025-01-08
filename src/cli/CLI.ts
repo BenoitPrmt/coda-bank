@@ -1,8 +1,9 @@
 import type { Choice, PromptType } from "prompts";
 import prompts from "prompts";
+import {BankAccount} from "../models/BankAccount";
 
 export interface CLIChoice extends Choice {
-  action: () => Promise<void>;
+  action: () => Promise<void|BankAccount|null>;
 }
 
 /**
@@ -52,12 +53,7 @@ export class CLI {
     }
   }
 
-  /**
-   * Displays a menu to the user with the available choices.
-   * If a choice is selected, its action is executed, then the menu is displayed again.
-   * If "Quitter" is selected, calls the `quit` method.
-   */
-  public async menu() {
+  public async menuWithReturn(): Promise<any> {
     try {
       const response = await prompts({
         type: "select",
@@ -74,7 +70,7 @@ export class CLI {
 
       if (response.action === undefined) {
         await this.quit();
-        return;
+        return null;
       }
 
       const choice = this.choices.find(
@@ -83,21 +79,66 @@ export class CLI {
 
       if (choice) {
         try {
-          await choice.action();
+          return await choice.action();
         } catch (error) {
-            console.log("\nUne erreur est survenue");
+          console.log("\nUne erreur est survenue");
+          return null;
         }
       } else {
         await this.quit();
-        return;
+        return null;
       }
-
-      // Wait for 1 second before displaying the menu again
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      await this.menu();
     } catch (error) {
       console.log("\nUne erreur est survenue");
-      await this.menu();
+      return null;
+    }
+  }
+
+  /**
+   * Displays a menu to the user with the available choices.
+   * If a choice is selected, its action is executed, then the menu is displayed again.
+   * If "Quitter" is selected, calls the `quit` method.
+   */
+  public async menu() {
+    while (true) {
+      try {
+        const response = await prompts({
+          type: "select",
+          name: "action",
+          message: "Que voulez-vous faire ?",
+          choices: [
+            ...this.choices.map((choice) => ({
+              title: choice.title,
+              value: choice.value,
+            })),
+            { title: "Quitter", value: "quit" },
+          ],
+        });
+
+        if (response.action === undefined) {
+          await this.quit();
+          return;
+        }
+
+        const choice = this.choices.find(
+            (choice) => choice.value === response.action
+        );
+
+        if (choice) {
+          try {
+            await choice.action();
+            // Wait for 1 second before displaying the menu again
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          } catch (error) {
+            console.log("\nUne erreur est survenue");
+          }
+        } else {
+          await this.quit();
+          return;
+        }
+      } catch (error) {
+        console.log("\nUne erreur est survenue");
+      }
     }
   }
 

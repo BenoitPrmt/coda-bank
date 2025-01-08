@@ -1,7 +1,4 @@
-import { CLI } from "./cli/CLI";
-import {onboarding} from "./data/onboarding";
-import {BankAccount} from "./models/BankAccount";
-import {deposit, displayHistory, withdraw} from "./data/transactions";
+import {BankApp} from "./data/BankApp";
 
 const startupParts = [
   "   __________  ____  ___       ____  ___    _   ____ __",
@@ -16,45 +13,4 @@ const startupParts = [
 
 console.log(startupParts.join("\n"));
 
-onboarding().then((userBankAccount: BankAccount) => {
-  const cli = new CLI([
-    {
-      title: "Déposer de l'argent",
-      value: "deposit",
-      action: async () => {
-        try {
-          await deposit(userBankAccount);
-        } catch (error) {
-            // Error already handled in deposit
-        }
-      },
-    },
-    {
-      title: "Retirer de l'argent",
-      value: "withdraw",
-      action: async () => {
-        try {
-          await withdraw(userBankAccount);
-        } catch (error) {
-          // Error already handled in withdraw
-        }
-      },
-    },
-    {
-      title: "Voir le solde",
-      value: "balance",
-      action: async () => {
-        userBankAccount.displayBalance();
-      },
-    },
-    {
-      title: "Voir l'historique des transactions",
-      value: "history",
-      action: async () => {
-        await displayHistory(userBankAccount);
-      },
-    },
-  ]);
-
-  cli.menu();
-});
+BankApp.run();
