@@ -1,20 +1,22 @@
 import {BankAccount} from "../models/BankAccount";
 import {AuthenticationService} from "../services/AuthenticationService";
 import {CLI} from "../cli/CLI";
-import {TransactionService} from "../services/TransactionService";
+import {ActionService} from "../services/ActionService";
+import {ActionType} from "../types/ActionType";
 
 export class BankApp {
     /**
      * Main menu of BankApp for authenticated users
      */
     private static mainMenu(userBankAccount: BankAccount) {
+        const actionService = new ActionService();
         return [
             {
                 title: "Déposer de l'argent",
                 value: "deposit",
                 action: async () => {
                     try {
-                        await TransactionService.deposit(userBankAccount);
+                        await actionService.execute(ActionType.Deposit, userBankAccount);
                     } catch (error) {
                         // Error already handled in deposit
                     }
@@ -25,7 +27,7 @@ export class BankApp {
                 value: "withdraw",
                 action: async () => {
                     try {
-                        await TransactionService.withdraw(userBankAccount);
+                        await actionService.execute(ActionType.Withdraw, userBankAccount);
                     } catch (error) {
                         // Error already handled in withdraw
                     }
@@ -35,21 +37,21 @@ export class BankApp {
                 title: "Voir le solde",
                 value: "balance",
                 action: async () => {
-                    userBankAccount.displayBalance();
+                    await actionService.execute(ActionType.Balance, userBankAccount);
                 },
             },
             {
-                title: "Voir l'historique des transactions",
+                title: "Voir l'historique des actions",
                 value: "history",
                 action: async () => {
-                    await TransactionService.displayHistory(userBankAccount);
+                    await actionService.execute(ActionType.History, userBankAccount);
                 },
             },
             {
                 title: "Gérer le découvert autorisé",
                 value: "overdraft",
                 action: async () => {
-                    await TransactionService.setOverdraft(userBankAccount);
+                    await actionService.execute(ActionType.Overdraft, userBankAccount);
                 },
             },
             {

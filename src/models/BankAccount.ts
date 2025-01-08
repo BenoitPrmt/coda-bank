@@ -21,20 +21,10 @@ export class BankAccount {
 
     public deposit(amount: number, targetAccount: BankAccountType = "main"): void {
         targetAccount === "main" ? this.money += amount : this.savings += amount;
-        this.addToHistory(BankAccountActionType.Deposit, amount, targetAccount);
-        this.displayBalance();
     }
 
     public withdraw(amount: number, targetAccount: BankAccountType = "main"): void {
-        const targetMoney = targetAccount === "main" ? this.money : this.savings;
-        if ((amount - targetMoney) > this.overdraft) {
-            console.log("Solde insuffisant, opération annulée.");
-            this.addToHistory(BankAccountActionType.Withdraw, amount, targetAccount, false);
-            return;
-        }
-        this.money -= amount;
-        this.addToHistory(BankAccountActionType.Withdraw, amount, targetAccount);
-        this.displayBalance();
+        targetAccount === "main" ? this.money -= amount : this.savings -= amount;
     }
 
     public setOverdraft(amount: number): void {
@@ -51,15 +41,5 @@ export class BankAccount {
         const operation = new Operation(amount, targetBalance, actionType, isSuccessful, account);
         this.history.push(operation);
         console.log(`Transaction ${isSuccessful ? 'réussie' : 'échouée'}.`);
-    }
-
-    public displayHistory(): void {
-        console.log("Date | Etat | Type de transaction - Montant (solde) | Compte");
-        console.log('-'.repeat(50));
-
-        const history = this.history.slice(-10);
-        history.forEach((transaction: Operation) => {
-            console.log(transaction.toString());
-        });
     }
 }
