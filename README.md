@@ -13,6 +13,10 @@ Coda Bank est une application bancaire fictive dans le terminal développée en 
 - (Bonus) Système de compte épargne
 - (Bonus) Persistance des données dans un fichier JSON
 
+Il y a un compte déjà créé pour vous permettre de tester l'application plus facilement :
+- Nom d'utilisateur : `benoit`
+- Code PIN : `1234`
+
 ## ⚡️️ Prérequis
 Vous devez avoir NodeJS en version 18 ou supérieure installé sur votre machine.
 
