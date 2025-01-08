@@ -46,6 +46,13 @@ export class BankApp {
                 },
             },
             {
+                title: "Gérer le découvert autorisé",
+                value: "overdraft",
+                action: async () => {
+                    await Transactions.setOverdraft(userBankAccount);
+                },
+            },
+            {
                 title: "Se déconnecter",
                 value: "logout",
                 action: async () => {

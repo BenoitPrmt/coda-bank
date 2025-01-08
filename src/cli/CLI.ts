@@ -53,7 +53,7 @@ export class CLI {
     }
   }
 
-  public async menuWithReturn(): Promise<any> {
+  public async menuWithReturn() {
     try {
       const response = await prompts({
         type: "select",

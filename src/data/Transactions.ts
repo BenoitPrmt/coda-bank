@@ -40,4 +40,17 @@ export class Transactions {
         userBankAccount.displayHistory();
         await CLI.askValue("Appuyez sur Entrée pour revenir au menu", "text");
     }
+
+    /**
+     * Sets the overdraft limit for a user's bank account.
+     * @param userBankAccount
+     */
+    public static async setOverdraft(userBankAccount: BankAccount): Promise<void> {
+        const overdraft = await CLI.askValue(`Entrez le montant du découvert autorisé (${userBankAccount.overdraft}€ actuellement) :`, "number");
+        if (isNaN(overdraft) || overdraft < 0) {
+            console.log("Montant invalide. Veuillez entrer un nombre positif.");
+            return;
+        }
+        userBankAccount.setOverdraft(overdraft);
+    }
 }

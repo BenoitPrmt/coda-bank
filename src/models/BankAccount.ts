@@ -1,11 +1,13 @@
 import bcrypt from "bcrypt";
-import {BankAccountActionType, BankAccountHistory} from "../types/BankAccountTypes";
+import {BankAccountActionType} from "../types/BankAccountTypes";
+import {Operation} from "./Operation";
 
 export class BankAccount {
     public username: string;
     public pinCode: string;
     public money: number = 0;
-    public history: BankAccountHistory[] = [];
+    public overdraft: number = 0;
+    public history: Operation[] = [];
 
     constructor(username: string, pinCode: string) {
         this.username = username;
@@ -23,7 +25,7 @@ export class BankAccount {
     }
 
     public withdraw(amount: number): void {
-        if (amount > this.money) {
+        if ((amount - this.money) > this.overdraft) {
             console.log("Solde insuffisant, opération annulée.");
             this.addToHistory(BankAccountActionType.Withdraw, amount, false);
             return;
@@ -33,8 +35,9 @@ export class BankAccount {
         this.displayBalance();
     }
 
-    public checkBalance(): number {
-        return this.money;
+    public setOverdraft(amount: number): void {
+        this.overdraft = amount;
+        console.log(`Votre découvert autorisé est désormais de ${this.overdraft} €`);
     }
 
     public displayBalance(): void {
@@ -42,14 +45,8 @@ export class BankAccount {
     }
 
     public addToHistory(actionType: BankAccountActionType, amount: number, isSuccessful: boolean = true): void  {
-        const transaction: BankAccountHistory = {
-            date: new Date(),
-            amount,
-            balance: this.money,
-            successful: isSuccessful,
-            actionType
-        };
-        this.history.push(transaction);
+        const operation = new Operation(amount, this.money, actionType, isSuccessful);
+        this.history.push(operation);
         console.log(`Transaction ${isSuccessful ? 'réussie' : 'échouée'}.`);
     }
 
@@ -58,10 +55,8 @@ export class BankAccount {
         console.log("Date | Etat - Type de transaction - Montant (solde)");
 
         const history = this.history.slice(-10);
-        history.forEach((transaction: BankAccountHistory) => {
-            const date = new Date(transaction.date);
-            const displayDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} à ${date.getHours()}h${date.getMinutes()}`;
-            console.log(`${displayDate} | ${transaction.successful ? '✅' : '❌'} - ${transaction.actionType} de ${transaction.amount}€ (solde : ${transaction.balance}€)`);
+        history.forEach((transaction: Operation) => {
+            console.log(transaction.toString());
         });
         console.log('-'.repeat(50));
     }
