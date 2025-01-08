@@ -21,4 +21,14 @@ export class Operation {
         const targetAccount: string = this.account === "main" ? "Compte courant" : "Compte épargne";
         return `${displayDate} | ${this.successful ? '✅' : '❌'} | ${this.actionType} de ${this.amount}€ (solde : ${this.balance}€) | ${targetAccount}`;
     }
+
+    public toJson(): any {
+        return {
+            amount: this.amount,
+            targetBalance: this.balance,
+            actionType: this.actionType,
+            isSuccessful: this.successful,
+            account: this.account
+        };
+    }
 }

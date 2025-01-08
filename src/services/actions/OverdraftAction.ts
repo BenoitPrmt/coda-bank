@@ -1,6 +1,7 @@
 import { BankAccount } from "../../models/BankAccount";
 import { CLI } from "../../cli/CLI";
 import { Action } from "./Action";
+import {PersistenceService} from "../PersistenceService";
 
 export class OverdraftAction implements Action {
     async execute(userBankAccount: BankAccount): Promise<void> {
@@ -10,5 +11,7 @@ export class OverdraftAction implements Action {
             return;
         }
         userBankAccount.setOverdraft(overdraft);
+
+        PersistenceService.saveBankAccount(userBankAccount);
     }
 }

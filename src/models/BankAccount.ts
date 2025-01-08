@@ -42,4 +42,25 @@ export class BankAccount {
         this.history.push(operation);
         console.log(`Transaction ${isSuccessful ? 'réussie' : 'échouée'}.`);
     }
+
+    public loadFromJson(json: any): void {
+        this.money = json.money;
+        this.savings = json.savings;
+        this.overdraft = json.overdraft;
+        this.history = json.history.map((operation: any) => {
+            return new Operation(operation.amount, operation.targetBalance, operation.actionType, operation.isSuccessful, operation.account);
+        });
+        this.pinCode = json.pinCode;
+    }
+
+    public toJson(): any {
+        return {
+            money: this.money,
+            savings: this.savings,
+            overdraft: this.overdraft,
+            history: this.history.map(operation => operation.toJson()),
+            username: this.username,
+            pinCode: this.pinCode
+        };
+    }
 }

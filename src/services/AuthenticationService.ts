@@ -1,6 +1,7 @@
 import { BankAccount } from "../models/BankAccount";
 import { CLI } from "../cli/CLI";
 import {PIN_CODE_LENGTH, PIN_CODE_MAX_ATTEMPTS} from "../config/constants";
+import {PersistenceService} from "./PersistenceService";
 
 /**
  * Service class for user authentication (login and registration).
@@ -55,6 +56,9 @@ export class AuthenticationService {
 
         const newAccount = new BankAccount(username, pinCode);
         AuthenticationService.accounts.push(newAccount);
+
+        PersistenceService.saveBankAccount(newAccount);
+
         console.log("Compte créé avec succès ! Veuillez vous connecter.");
     }
 
@@ -62,7 +66,7 @@ export class AuthenticationService {
      * Log in an existing user account.
      */
     public static async login(): Promise<BankAccount | null> {
-        if (this.accounts.length === 0) {
+        if (PersistenceService.loadBankAccounts().length === 0) {
             console.log("Aucun compte n'a été créé. Veuillez d'abord créer un compte.");
             await this.register();
             return this.login();
@@ -71,7 +75,8 @@ export class AuthenticationService {
         let attempts = 0;
         do {
             const username: string = await CLI.askValue("Entrez votre nom d'utilisateur :", "text");
-            this.currentAccount = this.accounts.find((account) => account.username === username) || null;
+
+            this.currentAccount = PersistenceService.getBankAccountByUsername(username);
             if (!this.currentAccount) {
                 console.log("Nom d'utilisateur introuvable.");
             }

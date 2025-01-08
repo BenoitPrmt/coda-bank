@@ -2,6 +2,7 @@ import {Action} from "./Action";
 import {BankAccount} from "../../models/BankAccount";
 import {CLI} from "../../cli/CLI";
 import {BankAccountActionType, BankAccountType} from "../../types/BankAccountTypes";
+import {PersistenceService} from "../PersistenceService";
 
 export class DepositAction implements Action {
     async execute(userBankAccount: BankAccount): Promise<void> {
@@ -17,5 +18,7 @@ export class DepositAction implements Action {
         userBankAccount.deposit(amount, targetAccount);
         userBankAccount.addToHistory(BankAccountActionType.Deposit, amount, targetAccount);
         userBankAccount.displayBalance();
+
+        PersistenceService.saveBankAccount(userBankAccount);
     }
 }
