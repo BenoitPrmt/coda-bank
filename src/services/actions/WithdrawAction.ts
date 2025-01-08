@@ -5,6 +5,10 @@ import {BankAccountActionType, BankAccountType} from "../../types/BankAccountTyp
 import {PersistenceService} from "../PersistenceService";
 
 export class WithdrawAction implements Action {
+    /**
+     * Execute the withdraw action for the user bank account
+     * @param userBankAccount
+     */
     async execute(userBankAccount: BankAccount): Promise<void> {
         await CLI.askValue("Entrez le montant à retirer :", "number").then(async (amount: number) => {
             if (isNaN(amount) || amount <= 0) {

@@ -16,12 +16,18 @@ export class Operation {
         this.account = account;
     }
 
+    /**
+     * Display the operation in a readable format
+     */
     public toString(): string {
         const displayDate = `${this.date.getDate()}/${this.date.getMonth() + 1}/${this.date.getFullYear()} à ${this.date.getHours()}h${this.date.getMinutes()}`;
         const targetAccount: string = this.account === "main" ? "Compte courant" : "Compte épargne";
         return `${displayDate} | ${this.successful ? '✅' : '❌'} | ${this.actionType} de ${this.amount}€ (solde : ${this.balance}€) | ${targetAccount}`;
     }
 
+    /**
+     * Convert the operation to a JSON object
+     */
     public toJson(): OperationJsonType {
         return {
             amount: this.amount,

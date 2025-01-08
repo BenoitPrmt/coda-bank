@@ -5,6 +5,10 @@ import {BankAccountActionType, BankAccountType} from "../../types/BankAccountTyp
 import {PersistenceService} from "../PersistenceService";
 
 export class DepositAction implements Action {
+    /**
+     * Execute the deposit action for the user bank account
+     * @param userBankAccount
+     */
     async execute(userBankAccount: BankAccount): Promise<void> {
         const amount: number = await CLI.askValue("Entrez le montant à déposer :", "number");
         if (isNaN(amount) || amount <= 0) {
