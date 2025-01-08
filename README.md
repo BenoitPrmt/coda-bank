@@ -9,6 +9,7 @@ Coda Bank est une application bancaire fictive dans le terminal développée en 
 - Retirer de l'argent
 - Voir l'historique des opérations et leur succès
 - Voir le solde
+- (Bonus) Système de découvert
 
 ## ⚡️️ Prérequis
 Vous devez avoir NodeJS en version 18 ou supérieure installé sur votre machine.
