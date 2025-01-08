@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import {BankAccountActionType} from "../types/BankAccountTypes";
 import {Operation} from "./Operation";
+import {EncryptionService} from "../services/EncryptionService";
 
 export class BankAccount {
     public username: string;
@@ -11,11 +12,11 @@ export class BankAccount {
 
     constructor(username: string, pinCode: string) {
         this.username = username;
-        this.pinCode = bcrypt.hashSync(pinCode, 10);
+        this.pinCode = EncryptionService.hash(pinCode);
     }
 
     public checkPinCode(pinCode: string): boolean {
-        return bcrypt.compareSync(pinCode, this.pinCode);
+        return EncryptionService.verify(pinCode, this.pinCode);
     }
 
     public deposit(amount: number): void {
